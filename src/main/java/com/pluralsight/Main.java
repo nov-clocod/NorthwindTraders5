@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,6 +17,12 @@ public class Main {
 
         String username = args[0];
         String password = args[1];
+
+        BasicDataSource dataSource = new BasicDataSource();
+
+        dataSource.setUrl("jdbc:mysql://localhost:3306/sakila");
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
 
         try (Scanner myScanner = new Scanner(System.in)) {
             boolean isDone = false;
@@ -32,17 +40,17 @@ public class Main {
 
                 switch (userChoice) {
                     case 1:
-                        displayAllProducts(username, password);
+                        displayAllProducts(dataSource);
                         break;
                     case 2:
-                        displayAllCustomers(username, password);
+                        displayAllCustomers(dataSource);
                         break;
                     case 3:
-                        displayAllCategories(username, password);
+                        displayAllCategories(dataSource);
                         System.out.println("\nChoose a categoryID to display products in that category");
                         String userInputCategoryID = myScanner.nextLine().trim();
 
-                        displayCategoryProducts(username, password, userInputCategoryID);
+                        displayCategoryProducts(dataSource, userInputCategoryID);
                     case 0:
                         isDone = true;
                         break;
@@ -57,7 +65,7 @@ public class Main {
         }
     }
 
-    public static void displayCategoryProducts(String username, String password, String categoryID) {
+    public static void displayCategoryProducts(BasicDataSource dataSource, String categoryID) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -67,11 +75,7 @@ public class Main {
                     WHERE CategoryID = ?
                     """;
 
-            try (Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/northwind",
-                    username,
-                    password
-            );
+            try (Connection connection = dataSource.getConnection();
 
                  PreparedStatement preparedStatement = connection.prepareStatement(query)
             ) {
@@ -99,7 +103,7 @@ public class Main {
         }
     }
 
-    public static void displayAllCategories(String username, String password) {
+    public static void displayAllCategories(BasicDataSource dataSource) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -108,11 +112,7 @@ public class Main {
                     FROM categories
                     """;
 
-            try (Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/northwind",
-                    username,
-                    password
-            );
+            try (Connection connection = dataSource.getConnection();
 
                  PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -135,7 +135,7 @@ public class Main {
         }
     }
 
-    public static void displayAllProducts(String username, String password) {
+    public static void displayAllProducts(BasicDataSource dataSource) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -144,11 +144,7 @@ public class Main {
                     FROM products
                     """;
 
-            try (Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/northwind",
-                    username,
-                    password
-            );
+            try (Connection connection = dataSource.getConnection();
 
                  PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -173,7 +169,7 @@ public class Main {
         }
     }
 
-    public static void displayAllCustomers(String username, String password) {
+    public static void displayAllCustomers(BasicDataSource dataSource) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -183,11 +179,7 @@ public class Main {
                     ORDER BY Country
                     """;
 
-            try (Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/northwind",
-                    username,
-                    password
-            );
+            try (Connection connection = dataSource.getConnection();
 
                  PreparedStatement preparedStatement = connection.prepareStatement(query);
 
