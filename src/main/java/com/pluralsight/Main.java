@@ -3,7 +3,6 @@ package com.pluralsight;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Scanner;
@@ -20,7 +19,7 @@ public class Main {
 
         BasicDataSource dataSource = new BasicDataSource();
 
-        dataSource.setUrl("jdbc:mysql://localhost:3306/sakila");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/northwind");
         dataSource.setUsername(username);
         dataSource.setPassword(password);
 
@@ -51,6 +50,7 @@ public class Main {
                         String userInputCategoryID = myScanner.nextLine().trim();
 
                         displayCategoryProducts(dataSource, userInputCategoryID);
+                        break;
                     case 0:
                         isDone = true;
                         break;
