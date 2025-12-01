@@ -67,8 +67,6 @@ public class Main {
 
     public static void displayCategoryProducts(BasicDataSource dataSource, String categoryID) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
             String query = """
                     SELECT ProductID, ProductName, UnitPrice, UnitsInStock
                     FROM products
@@ -105,8 +103,6 @@ public class Main {
 
     public static void displayAllCategories(BasicDataSource dataSource) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
             String query = """
                     SELECT CategoryID, CategoryName
                     FROM categories
@@ -137,8 +133,6 @@ public class Main {
 
     public static void displayAllProducts(BasicDataSource dataSource) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
             String query = """
                     SELECT ProductID, ProductName, UnitPrice, UnitsInStock
                     FROM products
@@ -171,8 +165,6 @@ public class Main {
 
     public static void displayAllCustomers(BasicDataSource dataSource) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
             String query = """
                     SELECT ContactName, CompanyName, City, Country, Phone
                     FROM customers
